@@ -9,14 +9,14 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '主页', link: '/' },
-      { text: '指南', link: '/guide' },
+      { text: '指引', link: '/guide' },
       // { text: 'Commands', link: '/api' },
       // { text: 'Configration', link: '/config' },
       // { text: 'Family', link: '/family' },
     ],
     sidebar: [
       {
-        text: '指南',
+        text: '指引',
         items: [
           { text: '开始使用', link: '/guide' },
           { text: '为什么选择Tealina?', link: '/why' },
