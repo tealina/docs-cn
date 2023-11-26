@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Tealina"
   text: "一个用于构建端到端类型安全API服务的CLI"
-  tagline: 和生成代码,类型,文档
+  tagline: 还有生成代码,类型,文档
   image:
     src: logo.svg
     alt: Tealina
@@ -21,7 +21,7 @@ features:
   - title: 端到端类型安全
     details: 无需在前端重复定义类型
   - title: API 文档
-    details: 直接从代码中生成文档
+    details: 直接从代码中提取文档信息
   - title: 零运行时
     details: 仅需类型别名和少量约定
   - title: 文件即路由
