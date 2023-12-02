@@ -1,4 +1,4 @@
-`@tealina/doc-ui` 提供一个网页用于呈现由 [gdoc](/commands/gdoc) 生成的 `doc.json`
+`@tealina/doc-ui` 提供一个网页用于呈现API文档
 ## VS Code 风格的语法高亮
 ![synatx-highlight](/synatx-highlight.png)
 
