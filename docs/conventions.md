@@ -1,4 +1,5 @@
-# 约定
+约定文件结构, 使得Tealina能够帮你生成API文件, 类型声明, 和自动更新index文件的导入导出.
+## 文件结构
 1. 所有API文件存储在 `[api-dir]/[method]`,
 ```md {1,3}
 api-dir
@@ -22,6 +23,7 @@ api-dir
    
 ```
 
+## 文件内部
 2. 每个 API 文件有 export default 处理函数
 ::: code-group
 ```ts [create.ts] {12}
@@ -96,6 +98,7 @@ export const convention: EnsureHandlerType = (...handlers) => handlers
 
 ```
 :::
+## 索引
 4. `[api-dir]/[method]/index.ts` 定义路由和处理函数的映射关系
   ```ts
     export default {
@@ -110,6 +113,7 @@ export const convention: EnsureHandlerType = (...handlers) => handlers
       ...
     }
   ```
+## 类型声明
 6. `[api-dir].d.ts` API 类型入口文件
 ```ts
 import apis from '../src/api-v1/index.ts'
@@ -120,8 +124,3 @@ export type ApiTypesRecord = {
   [Method in keyof RawApis]: ResolveApiType<Awaited<RawApis[Method]>['default']>
 }
 ```
-::: tip
-Tealina 命令会帮你遵守这些约定
-:::
-
-

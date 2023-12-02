@@ -1,19 +1,19 @@
-# 配置类型生成
-默认情况下, `gpure` 采用与 `prisma generate`相同的规则,
+## 配置类型生成
+默认情况下, `gtype` 采用与 `prisma generate`相同的规则,
 比如: `xxUpdateInput` 所有属性变为可选,
-你可以在`tealina.config.mjs`修改这些规则.
+可以在`tealina.config.mjs`修改这些规则.
 ```js
 // @ts-check
 import { defineConfig } from 'tealina'
 
 export default defineConfig({
-  gpure:{
+  gtype:{
     // ...
   }
 })
 ```
 
-### 案列
+## 部分重写 
 当类型用于创建时,移除`id`属性
 ::: code-group
 ```js [ tealina.config.mjs ]
@@ -50,7 +50,7 @@ model Category {
 ```
 :::
 
-### Type remap (类型重映射)
+## 类型重映射
 重映射比部分重写更直接, 影响所有种类(`model`,`type`,`xxCreateInput`,`xxUpdateInput`,`xx`)
 ```js
 {
@@ -67,7 +67,7 @@ model Category {
 }
 ```
 
-### 默认映射规则
+## 默认映射规则
 ```ts
 /** https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#model-field-scalar-types */
 const justMap = new Map<string, string>([

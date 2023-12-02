@@ -1,12 +1,12 @@
-Tealina 所有特性都是作用在一个 `[api-dir]`目录, 当你有其他api目录, 比如: api-v2,
-跟随下面的步骤:
+Tealina 所有特性都是作用在一个 `[api-dir]`目录,
+当有其他API目录, 比如: api-v2, 需要手动处理:
 
-1. 更新 server/packages.json
+## 1. 更新 server/packages.json
 ```json {4}
 {
   "scripts": {
-    "v1": "tealina --api-dir src/api-v1",
-    "v2": "tealina --api-dir src/api-v2" //[!code ++]
+    "v1": "tealina src/api-v1",
+    "v2": "tealina src/api-v2" //[!code ++]
   },
   "exports": {
     "./api/v1": "./types/api-v1.d.ts",
@@ -14,9 +14,10 @@ Tealina 所有特性都是作用在一个 `[api-dir]`目录, 当你有其他api�
   }
 }
 ```
-2. 创建一个 API (会自动生成关联文件)
+## 2. 创建一个 API 
+会自动生成关联文件
 ```bash
-yarn v2 capi get/status
+yarn v2 get/status
 ```
 ::: details output
 <span style="color:#3dd68c"> + </span> api-v2/index.ts\
@@ -25,36 +26,51 @@ yarn v2 capi get/status
 <span style="color:#3dd68c"> + </span> types/api-v2.d.ts
 :::
 
-3. 注册 `v2` API 路由
+## 3. 构建 `v2` API 路由
 
-```ts {14-19}
-// server/src/app/index.ts
-import express, { Router } from "express";
-import apisV1 from "../api-v1/index.js";
-import apisV2 from "../api-v2/index.js"; //[!code ++]
-//...
+复制一份 src/app/buildV1Router.ts, 更名为 buildV2Router.ts, 并按需修改文件内容
+```ts {3,11}
+import { Router } from 'express'
+import { map, pipe, omitFn } from 'fp-lite'
+import apisV2 from '../api-v2/index.js' 
+// ...
 
-const buildV1Router = async () => {
-  const record = await loadAPIs(apisV1);
-  validateMethod(record);
-  //....
-  return router;
-};
+const registeSeparetely = (record: ResolvedAPIs) => {
+  // ...
+}
 
-const buildV2Router = async () => { //[!code ++]
-  const record = await loadAPIs(apisV2);
-  validateMethod(record);
-  //....
-  return router;
-};
+export const buildV1Router = async () => {
+  const record = await loadAPIs(apisV2)
+  validateMethod(record)
+  const [openRouter, authRouter] = registeSeparetely(record)
+  const router = Router().use(openRouter).use(authRouter)
+  return router
+}
 
-express()
-.use("/api/v1", buildV1Router)
-.use("/api/v2", buildV2Router); //[!code ++]
+```
+## 4. 注册路由
+```ts 
+// server/src/app/buildApiRouter.ts
+import { Router } from 'express'
+import { setupApiHeaders } from '../middlewares/setupApiHeaders.js'
+import { buildV1Router } from './buildV1Router.js'
+import { buildV2Router } from './buildV2Router.js' //[!code ++]
+import { apiNotFoundHandler } from '../middlewares/notFoundHandler.js'
+
+export const buildApiRoute = async () => {
+  const v1ApiRouter = await buildV1Router()
+  return (
+    Router({ caseSensitive: true })
+      .use(setupApiHeaders)
+      .use('/v1', v1ApiRouter)
+      .use('/v2', v2ApiRouter) //[!code ++]
+      .use(apiNotFoundHandler)
+  )
+}
 
 //...
 ```
-4. 注册 `v2` 文档路由
+## 5. 注册 `v2` 文档路由
 ::: details
 ```ts {9-13,25-27}
 // server/src/app/docRouter.ts
@@ -89,8 +105,8 @@ const docRouter = Router({ caseSensitive: true })
 export { docRouter, VDOC_BASENAME }
 ```
 :::
-5.前端创建一个新的 req.ts
-
+## 6. 前端创建一个新的 req.ts
+复制一份 web/src/api/req.ts, 更名为 reqV2.ts, 并按需修改文件内容
 ```ts [reqV2.ts] {3}
 // web/src/api/reqV2.ts
 import axios from "axios";

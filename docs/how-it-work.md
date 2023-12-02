@@ -1,8 +1,9 @@
 Tealina 通过少量约定和Typesript基本特性, 实现端到端类型. 这里使用最少代码助你快速理解其原理:
-### 约定
 
-以 key value 的结构批量导出API
-
+## 批量导出API
+以key value结构批量导出API定义, 这带来两个好处:
+1. 每个api目录只需定义一次路由
+2. 方便后续映射类型
 ```ts
 /// [api-dir/index.ts]
 export default {
@@ -14,8 +15,8 @@ export default {
   'category/create': import('./category/create.js'),
 }
 ```
-使用可推断的类型别名
-
+## 类型别名
+基于框架的 Handler 函数, 封装一个类型别名 HandlerType<输入, 输出, 请求头, ...其他>
 ```ts
 // api-v1/post/category/create.ts
 import type { HandlerType } from '../../../types/handler.js' //部分源码在下面
@@ -29,13 +30,12 @@ const handler:ApiType = (req, res) => {
 export default handler
 ```
 
-### Typescript
-
-使用 Typescript 提取API信息
+### 类型提取和重映射
+使用 infer 语法, 提取API信息
 ::: code-group
 ```ts [types/api-v1.d.ts]
 import apis from "../src/api-v1/index.ts";
-import type { ExtractApiType } from "./handler.js";
+import type { ExtractApiType } from "./handler.js"; // infer 在文件内用到 
 
 type RawApis = typeof apis;
 export type ApiTypesRecord = {
@@ -75,8 +75,10 @@ type ApiTypesRecord = {
 };
 ```
 :::
-### Link Package
-在 server/package.json 定义 `exports` 类型声明
+
+## 类型共享给前端
+把类型暴露给前端, 而且只是类型, 运用node的包管理特性,
+在 server/package.json 定义 `exports` 类型声明, 导出API类型
 
 ```json
 // server/package.json
@@ -99,11 +101,12 @@ type ApiTypesRecord = {
 ```
 
 :::warning
-在前端执行build的时候, Typescript 会使用web/tsconfig.json中约束规则检查后端的ts代码, 所以请确保前后端约束规则保持一致. 原因是 tsc 检查只是跳过.d.ts文件, 不跳过.ts文件. 
+在前端执行 build 的时候, Typescript 会使用 web/tsconfig.json 中的约束规则检查后端的ts代码, 原因是 tsc 检查只是跳过.d.ts文件, 不跳过.ts文件. 所以请确保前后端约束规则保持一致.
 :::
 
-用 ApiTypesRecord 类型封装一个request对象, 利用 proxy 特性, 将所有请求传递至axios.request处理.
-每个[api-dir]只需定义一遍, 实现类型自动同步.
+## 封装请求函数
+用后端导出的API类型, 封装一个request对象,
+实现写代码的时候用的是实时类型, 利用 proxy 特性, 将所有请求交给axios.request处理.
 ::: code-group
 
 ```ts [web/src/api/req.ts]
@@ -152,3 +155,11 @@ req.post("category/create", {
   },
 });
 ```
+
+:::tip 类型延迟
+如果遇到后端类型有更新, 前端没反应过来,
+这种情况是因为 Typescript 语言服务有缓存, 
+两种解决方法:
+1. 定位到变量, f12 跳转到定义, 触发类型刷新.
+2. 手动重启 TS 服务, 以 VS code 为例, Ctrl + Shift + P,  找到: Restart TS Server 并执行
+:::

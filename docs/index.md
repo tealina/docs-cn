@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Tealina"
   text: "一个用于构建端到端类型安全API服务的CLI"
-  tagline: 还有生成代码,类型,文档
+  tagline: 还有生成代码, 类型, 文档
   image:
     src: logo.svg
     alt: Tealina
@@ -14,8 +14,8 @@ hero:
       text: 开始
       link: /guide
     - theme: alt
-      text: 约定
-      link: /conventions
+      text: 为什么选择 Tealina ?
+      link: /why
 
 features:
   - title: 端到端类型安全
@@ -29,7 +29,7 @@ features:
 ---
 
 <script setup>
-import serverMp4 from '/server.mp4?url'
+import serverMp4 from '/server1.mp4?url'
 import webMp4 from '/web.mp4?url'
 </script>
 

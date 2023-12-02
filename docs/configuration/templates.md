@@ -1,45 +1,10 @@
-编写CRUD的时候, 大部分代码在起步阶段都是一样的, 所以, 我们可以制定一些模版.
+在创建API的时候, Tealina 只知道最终的文件路径, 文件内的具体代码, 是通过自定义模版填充的.
 
-脚手架项目自带了一些模版,你可以修改它
-::: code-group
-```js [dev-templates/index.mjs]
-// @ts-check
-import genCreateCode from './genCreateCode.mjs'
-import genBasicCode from './genBasicCode.mjs'
-import { defineApiTemplates } from 'tealina'
+## 模版即函数
+一个接收上下文, 返回字符串的js函数.
+为了更方便的定制模版, Tealina 提供了一个`makeTeamplate`的辅助函数, 
 
-export default defineApiTemplates([
-  {
-    alias: 'c',
-    name: 'create',
-    method: 'post',
-    generateFn: genCreateCode,
-  },
-  ...
-  {
-    alias: '*', //fallback
-    name: '',
-    method: 'post',
-    generateFn: genBasicCode,
-  },
-])
-```
-```js [tealina.config.mjs]
-// @ts-check
-import { defineConfig } from 'tealina'
-import apiTemplates from './dev-templates/handlers/index.mjs'
-import { genTestSuite, genTestHelper } from './dev-templates/test/index.mjs'
-
-export default defineConfig({
-  template: {
-    handlers: apiTemplates,
-    test: {
-      genSuite: genTestSuite,
-      genHelper: genTestHelper,
-    },
-  },
-})
-```
+::: details 示例代码
 ```js [dev-templates/genCreateCode.mjs]
 // @ts-check
 import { makeTemplate } from 'tealina'
@@ -68,7 +33,56 @@ export default makeTemplate(({ Dir: Model, relative2api, dir: model }) => {
 })
 
 ```
+:::
 
+## 定义多个模版
+可以为不同的 http-method 或按名称定义多个模版, 组成一个js数组, Tealina 也提供了 `definedApiTemplates` 辅助函数.
+```js [dev-templates/index.mjs]
+// @ts-check
+import genCreateCode from './genCreateCode.mjs'
+import genBasicCode from './genBasicCode.mjs'
+import { defineApiTemplates } from 'tealina'
+
+export default defineApiTemplates([
+  {
+    alias: 'c',
+    name: 'create',
+    method: 'post',
+    generateFn: genCreateCode,
+  },
+  ...
+  {
+    alias: '*', //fallback
+    name: '',
+    method: 'post',
+    generateFn: genBasicCode,
+  },
+])
+```
+
+::: tip
+当执行 `v1 user -t c`, Tealina 会通过别名 c 找到对应的模版, 使用模版名称作为文件名, 调用 generateFn 获得文件内容, 写入到API文件.
+:::
+
+## 注册到配置文件
+```js [tealina.config.mjs]
+// @ts-check
+import { defineConfig } from 'tealina'
+import apiTemplates from './dev-templates/handlers/index.mjs'
+import { genTestSuite } from './dev-templates/test/index.mjs'
+
+export default defineConfig({
+  template: {
+    handlers: apiTemplates,
+    test: {
+      genSuite: genTestSuite,
+    },
+  },
+})
+```
+
+## 类型
+::: details 详细定义
 ```ts [template.d.ts]
 interface TemplateContext {
   dir?: string
@@ -104,7 +118,4 @@ interface ApiTemplateType {
   generateFn: CodeGenerateFnType
 }
 ```
-::: 
-
-::: tip
-当你执行 `v1 capi user c`, Tealina 会通过别名 c 找到对应的模版, 使用模版名称作为文件名, 调用 generateFn 获得文件内容, 写入到API文件.
+:::
