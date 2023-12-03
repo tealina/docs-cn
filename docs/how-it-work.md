@@ -1,6 +1,6 @@
 Tealina 通过少量约定和Typesript基本特性, 实现端到端类型. 这里使用最少代码助你快速理解其原理:
 ## 类型提取流程图
-![type-flow](type-flow.png)
+![type-flow](/type-flow.png)
 ## 批量导出API
 以key value结构批量导出API定义, 这带来两个好处:
 1. 每个api目录只需定义一次路由
