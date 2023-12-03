@@ -7,7 +7,7 @@ hero:
   text: "一个用于构建端到端类型安全API服务的CLI"
   tagline: 还有生成代码, 类型, 文档
   image:
-    src: logo.svg
+    src: logov2.svg
     alt: Tealina
   actions:
     - theme: brand
