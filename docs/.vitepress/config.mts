@@ -21,6 +21,19 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '主页', link: '/' },
+      {
+        text:'v1.1.2',
+        items:[
+          {
+            text:'版本发布',
+            link:'https://github.com/tealina/tealina/releases',
+          },
+          {
+            text:'社区指南',
+            link: 'https://github.com/tealina/tealina/blob/main/CONTRIBUTING.md'
+          }
+        ]
+      }
       // { text: 'Commands', link: '/api' },
       // { text: 'Configration', link: '/config' },
       // { text: 'Family', link: '/family' },

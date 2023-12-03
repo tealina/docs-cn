@@ -30,7 +30,5 @@ $ bunx create-vite
 
 跟随提示, 创建成功后, 查看 server/README.md
 
-其他服务端框架的模版暂时未实现, 欢迎[贡献](https://github.com/tealina/tealina/pulls).
-
 前端项目由内部直接调用 [`create-vite`](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) 创建
 
