@@ -36,7 +36,7 @@ import webMp4 from '/web.mp4?url'
 <div style="height:1rem"></div>
 <div class="vp-doc" style="padding-left:10%;padding-right:10%">
 
-  ## 通过命令行生成代码, 类型, 文档
+  ## 通过命令行生成代码, 类型, 文档. 半分钟出第一版
   <div style="height:.4rem"></div>
   <video :src="serverMp4" style="width:100%" muted loop controls/>
 
