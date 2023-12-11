@@ -4,8 +4,7 @@ layout: home
 
 hero:
   name: "Tealina"
-  text: "一个用于构建端到端类型安全API服务的CLI"
-  tagline: 还有生成代码, 类型, 文档
+  text: "让全栈项目拥有端到端类型和API文档"
   image:
     src: logov2.svg
     alt: Tealina

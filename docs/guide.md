@@ -28,7 +28,8 @@ $ bunx create-vite
 ``` -->
 :::
 
-跟随提示, 创建成功后, 查看 server/README.md
+跟随提示即可。
 
-前端项目由内部直接调用 [`create-vite`](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) 创建
+[高清视频演示](https://www.bilibili.com/video/BV1La4y1979K/)
+
 
