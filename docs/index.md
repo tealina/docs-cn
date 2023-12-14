@@ -26,7 +26,12 @@ features:
   - title: 文件即路由
     details: API路由与文件结构对齐
 ---
-
+<style>
+  .container p.text{
+    font-size: 45px;
+    line-height: 1.3;
+  }
+</style>
 <script setup>
 import serverMp4 from '/server1.mp4?url'
 import webMp4 from '/web.mp4?url'
