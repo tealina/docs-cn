@@ -23,9 +23,9 @@ $ npm create tealina@latest
 $ yarn create tealina
 ```
 
-<!-- ```bash [Bun]
-$ bunx create-vite
-``` -->
+```bash [Bun]
+$ bun create tealina
+```
 :::
 
 跟随提示即可。
