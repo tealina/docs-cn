@@ -5,7 +5,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Tealina',
   description: 'Tealina 官方文档',
-  lang:'zh',
+  lang: 'zh',
   locales: {
     root: {
       label: '简体中文',
@@ -22,14 +22,14 @@ export default defineConfig({
     nav: [
       { text: '主页', link: '/' },
       {
-        text:'v1.1.2',
-        items:[
+        text: 'v1.1.3',
+        items: [
           {
-            text:'版本发布',
-            link:'https://github.com/tealina/tealina/releases',
+            text: '版本发布',
+            link: 'https://github.com/tealina/tealina/releases',
           },
           {
-            text:'社区指南',
+            text: '社区指南',
             link: 'https://github.com/tealina/tealina/blob/main/CONTRIBUTING.md'
           }
         ]
@@ -56,7 +56,7 @@ export default defineConfig({
           },
         ],
       },
-      
+
 
       {
         text: '配置',
